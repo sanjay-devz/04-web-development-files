@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     HTML REVISION FILE
+     How to use:
+     1. Save this as index.html in VS Code
+     2. Right-click file -> "Open with Live Server" (or just double-click it)
+     3. Read the comments, then CHANGE things and refresh to see what happens
+     ============================================================ -->
+
+<!-- The <html> element is the root. lang="" helps screen readers & SEO -->
+<html lang="en">
+
+<head>
+  <!-- head = info ABOUT the page. Nothing here shows on the page itself -->
+  <meta charset="UTF-8">
+  <!-- viewport makes it responsive on phones -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="My HTML revision page">
+  <meta name="author" content="Your Name">
+  <title>HTML Revision — Learn by Reading</title>
+
+  <!-- OPTIONAL CSS: only here so you can SEE the boxes of semantic tags.
+       Delete this whole <style> block if you only want raw HTML. -->
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 850px; margin: 20px auto; padding: 0 16px; line-height: 1.6; }
+    header, nav, main, section, article, aside, footer { border: 1px dashed #999; padding: 10px; margin: 10px 0; border-radius: 6px; }
+    nav a { margin-right: 10px; }
+    table, th, td { border: 1px solid #444; border-collapse: collapse; padding: 6px 10px; }
+    img { max-width: 100%; }
+    .note { background: #fff8d6; padding: 8px; border-left: 4px solid #e0b800; }
+  </style>  
+</head>
+
+  <body>
+  <!-- body = everything the user actually SEES -->
+
+  <!-- ============================================================
+       1. HEADINGS (h1 to h6) and PARAGRAPHS (p)
+       Use only ONE h1 per page. Don't skip levels for styling reasons.
+       ============================================================ -->
+  <h1>HTML Revision Notes</h1>
+  <h2>1. Headings &amp; Paragraphs</h2>
+  <h3>This is an h3</h3>
+  <h4>h4</h4>
+  <h5>h5</h5>
+  <h6>h6 — smallest heading</h6>
+
+  <p>This is a paragraph. The &lt;p&gt; tag adds space above and below automatically.</p>
+  <!-- &lt; and &gt; are "entities" used to DISPLAY < and > as text -->
+  <p>Special entities: &amp;lt; = &lt; &nbsp;|&nbsp; &amp;gt; = &gt; &nbsp;|&nbsp; &amp;amp; = &amp; &nbsp;|&nbsp; &amp;copy; = &copy;</p>
+
+  <!-- br = line break (self-closing). hr = horizontal rule / thematic break -->
+  <p>Line one <br>Line two after a &lt;br&gt;</p>
+  <hr>
+
+  <!-- ============================================================
+       2. TEXT FORMATTING (inline elements)
+       ============================================================ -->
+  <h2>2. Text Formatting</h2>
+  <p>
+    <strong>strong = important (bold)</strong>,
+    <b>b = bold (no importance)</b>,
+    <em>em = emphasis (italic)</em>,
+    <i>i = italic (no emphasis)</i>,
+    <u>u = underline</u>,
+    <mark>mark = highlighted</mark>,
+    <small>small = fine print</small>,
+    <del>del = deleted text</del>,
+    <ins>ins = inserted text</ins>,
+    H<sub>2</sub>O (sub),
+    E = mc<sup>2</sup> (sup)
+  </p>
+
+  <!-- code = inline code, pre = keeps spaces & line breaks exactly -->
+  <p>Inline code: <code>&lt;h1&gt;Hello&lt;/h1&gt;</code></p>
+
+  <pre>
+&lt;pre&gt; keeps    spacing
+   and line breaks
+      exactly as typed.
+&lt;/pre&gt;
+
+  <!-- blockquote = long quote, q = short inline quote, abbr = abbreviation -->
+  <blockquote cite="https://developer.mozilla.org">
+    "HTML is the structure of every web page."
+  </blockquote>
+  <p>He said <q>HTML is easy</q> and then left.</p>
+  <p><abbr title="HyperText Markup Language">HTML</abbr> — hover me to see the full form.</p>
+
+  <hr>
+
+  <!-- ============================================================
+       3. LISTS
+       ul = unordered (bullets), ol = ordered (numbers), dl = description
+       ============================================================ -->
+  <h2>3. Lists</h2>
+
+  <h3>Unordered list (ul)</h3>
+  <ul>
+    <li>HTML — structure</li>
+    <li>CSS — style</li>
+    <li>JavaScript — behaviour</li>
+  </ul>
+
+  <h3>Ordered list (ol) with attributes</h3>
+  <!-- type="A" / "i" / "1", start="5", reversed -->
+  <ol type="1" start="1">
+    <li>Learn HTML</li>
+    <li>Learn CSS</li>
+    <li>Learn JavaScript</li>
+  </ol>
+
+  <!-- Nested list -->
+  <ul>
+    <li>Frontend
+      <ul>
+        <li>HTML</li>
+        <li>CSS</li>
+      </ul>
+    </li>
+    <li>Backend</li>
+  </ul>
+
+  <h3>Description list (dl)</h3>
+  <dl>
+    <dt>HTML</dt>
+    <dd>The structure of a web page</dd>
+    <dt>CSS</dt>
+    <dd>Controls how the page looks</dd>
+  </dl>
+
+  <hr>
+
+  <!-- ============================================================
+       4. LINKS (a)
+       href = where it goes, target="_blank" = new tab
+       ============================================================ -->
+  <h2>4. Links</h2>
+  <p><a href="https://developer.mozilla.org" target="_blank" rel="noopener">MDN Docs</a> (opens in new tab)</p>
+  <p><a href="#section-end">Jump to the bottom of this page (internal anchor)</a></p>
+  <p><a href="mailto:someone@example.com">Send an email</a></p>
+  <p><a href="tel:+919999999999">Call a number</a></p>
+  <p><a href="notes.pdf" download>Download a file (download attribute)</a></p>
+
+  <hr>
+
+  <!-- ============================================================
+       5. IMAGES
+       src = path/URL, alt = text if image fails (also for screen readers)
+       ============================================================ -->
+  <h2>5. Images</h2>
+  <img src="https://via.placeholder.com/300x120?text=Sample+Image" alt="A sample placeholder image" width="300" height="120">
+
+  <!-- figure + figcaption = image with a caption -->
+  <figure>
+    <img src="https://via.placeholder.com/200x100?text=Figure" alt="Placeholder inside a figure">
+    <figcaption>Fig 1: This caption is a &lt;figcaption&gt;</figcaption>
+  </figure>
+
+  <hr>
+
+  <!-- ============================================================
+       6. TABLES
+       table > caption, thead > tr > th, tbody > tr > td, tfoot
+       colspan = merge columns, rowspan = merge rows
+       ============================================================ -->
+  <h2>6. Tables</h2>
+  <table>
+    <caption>Student Marks</caption>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Subject</th>
+        <th>Marks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2">Aarav</td>   <!-- rowspan=2 spans two rows -->
+        <td>Maths</td>
+        <td>95</td>
+      </tr>
+      <tr>
+        <td>Science</td>
+        <td>88</td>
+      </tr>
+      <tr>
+        <td>Diya</td>
+        <td colspan="2">Result pending</td> <!-- colspan=2 spans two columns -->
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">End of report</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <hr>
+
+  <!-- ============================================================
+       7. FORMS
+       label "for" must match input "id" — that links them together
+       ============================================================ -->
+  <h2>7. Forms</h2>
+  <form action="/submit" method="post">
+
+    <fieldset>
+      <legend>Personal Details</legend>
+
+      <p>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+      </p>
+
+      <p>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+      </p>
+
+      <p>
+        <label for="pwd">Password:</label>
+        <input type="password" id="pwd" name="password" minlength="6">
+      </p>
+
+      <p>
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="1" max="100">
+      </p>
+
+      <p>
+        <label for="dob">Date of Birth:</label>
+        <input type="date" id="dob" name="dob">
+      </p>
+
+      <p>
+        <label for="color">Favourite colour:</label>
+        <input type="color" id="color" name="color">
+      </p>
+
+      <p>
+        <label for="range">Experience (1–10):</label>
+        <input type="range" id="range" name="range" min="1" max="10">
+      </p>
+
+      <p>
+        <label for="file">Upload file:</label>
+        <input type="file" id="file" name="file">
+      </p>
+
+      <p>
+        <!-- Radio buttons: same "name" = only one can be selected -->
+        Gender:
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label>
+      </p>
+
+      <p>
+        <!-- Checkboxes: multiple can be selected -->
+        Skills:
+        <input type="checkbox" id="html" name="skills" value="html">
+        <label for="html">HTML</label>
+        <input type="checkbox" id="css" name="skills" value="css">
+        <label for="css">CSS</label>
+      </p>
+
+      <p>
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+          <option value="">-- Select --</option>
+          <option value="in">India</option>
+          <option value="us">USA</option>
+          <option value="uk">UK</option>
+        </select>
+      </p>
+
+      <p>
+        <label for="message">Message:</label><br>
+        <textarea id="message" name="message" rows="4" cols="40" placeholder="Type here..."></textarea>
+      </p>
+
+      <!-- HTML5 built-in validation attributes:
+           required, minlength, maxlength, min, max, pattern, readonly, disabled -->
+      <p>
+        <label for="pin">PIN (4 digits, pattern check):</label>
+        <input type="text" id="pin" name="pin" pattern="[0-9]{4}" title="Enter exactly 4 digits">
+      </p>
+
+      <button type="submit">Submit</button>
+      <button type="reset">Reset</button>
+    </fieldset>
+  </form>
+
+  <hr>
+
+  <!-- ============================================================
+       8. SEMANTIC LAYOUT TAGS
+       These mean something; <div> means nothing.
+       header, nav, main, section, article, aside, footer
+       ============================================================ -->
+  <h2>8. Semantic Layout</h2>
+
+  <header>
+    <h3>Site Header</h3>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h3>Section: HTML Basics</h3>
+      <article>
+        <h4>Article: What is HTML?</h4>
+        <p>HTML stands for HyperText Markup Language. It structures content on the web.</p>
+      </article>
+      <article>
+        <h4>Article: What is a tag?</h4>
+        <p>A tag is written like <code>&lt;tagname&gt;content&lt;/tagname&gt;</code>.</p>
+      </article>
+    </section>
+
+    <aside>
+      <h4>Aside (sidebar / related info)</h4>
+      <p>This content is related but not essential.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Revision Page — Footer info goes here.</p>
+  </footer>
+
+  <hr>
+
+  <!-- ============================================================
+       9. MEDIA (audio / video / iframe)
+       ============================================================ -->
+  <h2>9. Media</h2>
+  <p>Audio (controls lets the user play/pause):</p>
+  <audio controls>
+    <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support audio.
+  </audio>
+
+  <p>Video:</p>
+  <video width="320" controls poster="https://via.placeholder.com/320x180">
+    <source src="clip.mp4" type="video/mp4">
+    Your browser does not support video.
+  </video>
+
+  <p>Iframe (embeds another page):</p>
+  <iframe src="https://example.com" width="300" height="150" title="Embedded page"></iframe>
+
+  <hr>
+
+  <!-- ============================================================
+       10. div vs span  (block vs inline containers)
+       div  = block-level box, used for grouping/layout
+       span = inline box, used for styling a bit of text
+       ============================================================ -->
+  <h2>10. div &amp; span</h2>
+  <div style="background:#e8f0ff; padding:10px;">
+    This is a <strong>div</strong> — it takes the full width (block).
+    Here is a <span style="color:red; font-weight:bold;">span</span> inside the text — it only wraps the words (inline).
+  </div>
+
+  <hr>
+
+  <!-- ============================================================
+       11. GLOBAL ATTRIBUTES (work on almost every tag)
+       id, class, style, title, hidden, lang, tabindex, data-*
+       ============================================================ -->
+  <h2>11. Global Attributes</h2>
+  <p id="unique-id" class="my-class" title="Tooltip shown on hover" data-user="42">
+    Hover me — I have id, class, title and a data-* attribute.
+  </p>
+  <p hidden>This paragraph is hidden with the "hidden" attribute (remove it to see me).</p>
+
+  <hr>
+
+  <!-- ============================================================
+       12. QUICK SELF-TEST (answer in your head)
+       - What's the difference between <strong> and <b>?
+       - Difference between <ol> and <ul>?
+       - Why is alt text important on images?
+       - What does target="_blank" do?
+       - Difference between id and class?
+       - Difference between a block element and an inline element?
+       - What does the <label for=""> attribute link to?
+       ============================================================ -->
+
+  <h2 id="section-end">End of Revision</h2>
+  <p class="note">
+    <strong>Practice tip:</strong> Delete one tag at a time and refresh the browser.
+    Watching what breaks is the fastest way to remember what each tag does.
+  </p>
+
+</body>
+
+</html>
