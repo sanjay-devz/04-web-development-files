@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>My Expenses</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+  <header>
+    <div>
+      <h1>My Expenses</h1>
+      <p class="sub">Simple &middot; Black &amp; White</p>
+    </div>
+    <div class="sub" id="today"></div>
+  </header>
+
+  <!-- ============ ADD FORM ============ -->
+  <section class="panel">
+    <h2 class="panel-title">Add expense</h2>
+    <form id="form" autocomplete="off">
+      <div class="field">
+        <label for="desc">Description</label>
+        <input id="desc" type="text" placeholder="e.g. Lunch" maxlength="60" required>
+      </div>
+      <div class="field">
+        <label for="amount">Amount</label>
+        <input id="amount" type="number" step="0.01" min="0.01" placeholder="0.00" required>
+      </div>
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category">
+          <option>Food</option>
+          <option>Transport</option>
+          <option>Bills</option>
+          <option>Shopping</option>
+          <option>Health</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="date">Date</label>
+        <input id="date" type="date" required>
+      </div>
+      <button type="submit" class="btn">Add</button>
+    </form>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="stats">
+    <div class="stat">
+      <span class="label">Total spent</span>
+      <span class="value" id="total">—</span>
+    </div>
+    <div class="stat">
+      <span class="label">Entries</span>
+      <span class="value" id="count">0</span>
+    </div>
+    <div class="stat">
+      <span class="label">Average</span>
+      <span class="value" id="avg">—</span>
+    </div>
+  </section>
+
+  <!-- ============ LIST ============ -->
+  <section class="panel">
+    <h2 class="panel-title">Expense list</h2>
+    <div class="table-wrap" id="tableWrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th class="num">Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <p class="empty" id="empty">No expenses yet — add one above.</p>
+  </section>
+
+  <!-- ============ BREAKDOWN ============ -->
+  <section class="panel" id="breakdownPanel" hidden>
+    <h2 class="panel-title">By category</h2>
+    <div id="breakdown"></div>
+  </section>
+
+  <footer>
+    <span class="hint">Saved in your browser only.</span>
+    <button type="button" class="btn-ghost" id="clear">Clear all</button>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ====== CONFIG — change currency here if you like ====== */
+  var LOCALE   = "en-IN";
+  var CURRENCY = "INR";
+  /* ====================================================== */
+
+  var KEY = "my-expenses-v1";
+
+  var money = new Intl.NumberFormat(LOCALE, {
+    style: "currency",
+    currency: CURRENCY,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  /* ---------- elements ---------- */
+  var form      = document.getElementById("form");
+  var descEl    = document.getElementById("desc");
+  var amountEl  = document.getElementById("amount");
+  var catEl     = document.getElementById("category");
+  var dateEl    = document.getElementById("date");
+  var tbody     = document.getElementById("tbody");
+  var emptyEl   = document.getElementById("empty");
+  var tableWrap = document.getElementById("tableWrap");
+  var totalEl   = document.getElementById("total");
+  var countEl   = document.getElementById("count");
+  var avgEl     = document.getElementById("avg");
+  var bdPanel   = document.getElementById("breakdownPanel");
+  var bdEl      = document.getElementById("breakdown");
+  var todayEl   = document.getElementById("today");
+  var clearBtn  = document.getElementById("clear");
+
+  /* ---------- storage ---------- */
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      var data = raw ? JSON.parse(raw) : [];
+      return Array.isArray(data) ? data : [];
+    } catch (e) { return []; }
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(expenses)); } catch (e) {}
+  }
+
+  var expenses = load();
+
+  /* ---------- helpers ---------- */
+  function uid() {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+  function todayISO() {
+    var d = new Date();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + m + "-" + day;
+  }
+  function prettyDate(iso) {
+    if (!iso) return "—";
+    var parts = iso.split("-");
+    if (parts.length !== 3) return iso;
+    var d = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ---------- render ---------- */
+  function render() {
+    var list = expenses.slice().sort(function (a, b) {
+      var d = String(b.date || "").localeCompare(String(a.date || ""));
+      if (d !== 0) return d;
+      return (b.created || 0) - (a.created || 0);
+    });
+
+    /* table */
+    if (list.length === 0) {
+      tbody.innerHTML = "";
+      tableWrap.hidden = true;
+      emptyEl.hidden = false;
+    } else {
+      tableWrap.hidden = false;
+      emptyEl.hidden = true;
+      tbody.innerHTML = list.map(function (e) {
+        return '<tr>' +
+          '<td class="date">' + esc(prettyDate(e.date)) + '</td>' +
+          '<td>' + esc(e.desc) + '</td>' +
+          '<td><span class="tag">' + esc(e.category || "Other") + '</span></td>' +
+          '<td class="num">' + esc(money.format(Number(e.amount) || 0)) + '</td>' +
+          '<td class="num"><button class="del" type="button" data-id="' + esc(e.id) +
+            '" title="Delete" aria-label="Delete">×</button></td>' +
+        '</tr>';
+      }).join("");
+    }
+
+    /* stats */
+    var total = expenses.reduce(function (s, e) { return s + (Number(e.amount) || 0); }, 0);
+    totalEl.textContent = money.format(total);
+    countEl.textContent = String(expenses.length);
+    avgEl.textContent = expenses.length ? money.format(total / expenses.length) : money.format(0);
+
+    /* breakdown */
+    var groups = {};
+    expenses.forEach(function (e) {
+      var k = e.category || "Other";
+      groups[k] = (groups[k] || 0) + (Number(e.amount) || 0);
+    });
+    var rows = Object.keys(groups).map(function (k) { return { name: k, value: groups[k] }; });
+    rows.sort(function (a, b) { return b.value - a.value; });
+
+    if (rows.length === 0) {
+      bdPanel.hidden = true;
+      bdEl.innerHTML = "";
+    } else {
+      bdPanel.hidden = false;
+      var max = rows[0].value || 1;
+      bdEl.innerHTML = rows.map(function (r) {
+        var pct = Math.max(2, Math.round((r.value / max) * 100));
+        return '<div class="row">' +
+          '<span class="name">' + esc(r.name) + '</span>' +
+          '<span class="track"><span class="fill" style="width:' + pct + '%"></span></span>' +
+          '<span class="amt">' + esc(money.format(r.value)) + '</span>' +
+        '</div>';
+      }).join("");
+    }
+  }
+
+  /* ---------- events ---------- */
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+
+    var desc = descEl.value.trim();
+    var amount = parseFloat(amountEl.value);
+    var date = dateEl.value || todayISO();
+
+    if (!desc || !isFinite(amount) || amount <= 0) return;
+
+    expenses.push({
+      id: uid(),
+      desc: desc,
+      amount: Math.round(amount * 100) / 100,
+      category: catEl.value,
+      date: date,
+      created: Date.now()
+    });
+
+    save();
+    render();
+
+    form.reset();
+    dateEl.value = todayISO();
+    catEl.selectedIndex = 0;
+    descEl.focus();
+  });
+
+  tbody.addEventListener("click", function (ev) {
+    var btn = ev.target.closest(".del");
+    if (!btn) return;
+    var id = btn.getAttribute("data-id");
+    expenses = expenses.filter(function (e) { return e.id !== id; });
+    save();
+    render();
+  });
+
+  clearBtn.addEventListener("click", function () {
+    if (expenses.length === 0) return;
+    if (!confirm("Delete all " + expenses.length + " expense(s)? This cannot be undone.")) return;
+    expenses = [];
+    save();
+    render();
+  });
+
+  /* ---------- init ---------- */
+  dateEl.value = todayISO();
+  todayEl.textContent = new Date().toLocaleDateString("en-GB", {
+    weekday: "short", day: "2-digit", month: "short", year: "numeric"
+  });
+  render();
+})();
+</script>
+</body>
+</html>
