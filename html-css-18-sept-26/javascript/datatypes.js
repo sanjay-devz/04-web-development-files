@@ -1,4 +1,8 @@
-let $num1 = 10
-let $num2 = 10
-
-console.log("addion of num1 and num2",$num1 + $num2)
+let age = 18
+let KnowDriving = false
+if (age >= 18 && KnowDriving ){
+    console.log("User is major!")
+}
+else{
+    console.log("user is Not major!!")
+}
