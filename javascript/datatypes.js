@@ -5,4 +5,4 @@ if (age >= 18 && KnowDriving ){
 }
 else{                 
     console.log("user is Not major!!")
-}else if 
+}
